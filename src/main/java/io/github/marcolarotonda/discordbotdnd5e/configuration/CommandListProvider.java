@@ -1,6 +1,6 @@
 package io.github.marcolarotonda.discordbotdnd5e.configuration;
 
-import io.github.marcolarotonda.discordbotdnd5e.command.impl.Command;
+import io.github.marcolarotonda.discordbotdnd5e.command.Command;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

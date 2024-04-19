@@ -1,4 +1,4 @@
-package io.github.marcolarotonda.discordbotdnd5e.command.impl;
+package io.github.marcolarotonda.discordbotdnd5e.command;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;

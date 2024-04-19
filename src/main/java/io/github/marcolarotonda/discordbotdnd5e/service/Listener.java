@@ -1,6 +1,7 @@
 package io.github.marcolarotonda.discordbotdnd5e.service;
 
-import io.github.marcolarotonda.discordbotdnd5e.command.impl.Command;
+import io.github.marcolarotonda.discordbotdnd5e.command.Command;
+
 import jakarta.annotation.Nonnull;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -28,7 +29,6 @@ public class Listener extends ListenerAdapter {
                     commandCreateAction::queue);
         }
     }
-
 
     @Override
     public void onSlashCommandInteraction(@Nonnull SlashCommandInteractionEvent event) {
