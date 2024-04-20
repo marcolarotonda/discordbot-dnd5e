@@ -20,12 +20,21 @@ public class InitiativeService {
     @Getter
     private List<InitiativeItem> initiative;
 
+    @Getter
+    private List<InitiativeItem> removedFromInitiative;
+
     public static final int INITIATIVE_STARTING_INDEX = 1;
 
     @Autowired
     public InitiativeService(ComputeInitiativeService computeInitiativeService) {
         this.computeInitiativeService = computeInitiativeService;
         initiative = new ArrayList<>();
+        removedFromInitiative = new ArrayList<>();
+    }
+
+    public void removeFromInitiative(int index) {
+        InitiativeItem toRemove = initiative.remove(index - INITIATIVE_STARTING_INDEX);
+        removedFromInitiative.add(toRemove);
     }
 
     public void addDamageToInitiativeItem(int index, int damageToAdd) {
