@@ -113,24 +113,6 @@ public class InitiativeService {
      * @param initiative List &lt InitiativeItem &gt
      * @return: String
      */
-    private String formatInitiative1(List<InitiativeItem> initiative) {
-        String blockDelimiter = "```";
-        String boldDelimiter = "**";
-        String format = getStringFormatter();
-
-        String message = boldDelimiter + blockDelimiter + String.format(format, "Order", "Name", "Damage", "Value") + blockDelimiter + boldDelimiter;
-
-        if (!initiative.isEmpty()) {
-            String initiativeTable = initiative.stream()
-                    .map(item -> String.format(format, initiative.indexOf(item), item.getName(), item.getDamageTaken(), item.getInitiativeValue()))
-                    .collect(Collectors.joining("\n"));
-            message = message.concat(blockDelimiter)
-                    .concat(initiativeTable)
-                    .concat(blockDelimiter);
-        }
-
-        return message;
-    }
     public String formatInitiative(List<InitiativeItem> initiative) {
         String blockDelimiter = "```";
         String boldDelimiter = "**";
