@@ -1,14 +1,12 @@
 package io.github.marcolarotonda.discordbotdnd5e.service;
 
-import io.github.marcolarotonda.discordbotdnd5e.model.InitiativeItem;
-import io.github.marcolarotonda.dnd5e.entity.Combatant;
+import io.github.marcolarotonda.dnd5e.model.InitiativeItem;
 import io.github.marcolarotonda.dnd5e.service.ComputeInitiativeService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -21,7 +19,7 @@ public class InitiativeService {
     private List<InitiativeItem> initiative;
 
     @Getter
-    private List<InitiativeItem> initiativeBin;
+    private final List<InitiativeItem> initiativeBin;
 
     public static final int INITIATIVE_STARTING_INDEX = 1;
 
@@ -57,69 +55,13 @@ public class InitiativeService {
         }
     }
 
-    public String getInitiativeFormatted(List<InitiativeItem> initiative) {
-        return formatInitiative(initiative);
-    }
-
-    /**
-     * Reset the initiative
-     */
-    public void clear() {
-        initiative.clear();
-        initiativeBin.clear();
-    }
-
-    public void changeInitiative(int actualPosition, int desiredPosition) {
-        InitiativeItem removed = initiative.remove(actualPosition - INITIATIVE_STARTING_INDEX);
-        initiative.add(desiredPosition - INITIATIVE_STARTING_INDEX, removed);
-
-    }
-
-    /**
-     * Given a list List &lt Map.Entry &lt Combatant, Integer &gt &gt, each element of this list is transformed into an InitiativeItem
-     * object.
-     *
-     * @return: Initiative order represented as List &lt InitiativeItem &gt
-     */
-    public List<InitiativeItem> getCalculatedInitiative() {
-
-        Function<Integer, InitiativeItem> getInitiativeItem = i -> {
-            Map.Entry<Combatant, Integer> entry = getInitiativeAsMapEntries().get(i);
-            return InitiativeItem.builder()
-                    .name(entry.getKey().getName())
-                    .description("")
-                    .damageTaken(0)
-                    .initiativeValue(entry.getValue())
-                    .build();
-        };
-
-        initiative = IntStream.range(0, getInitiativeAsMapEntries().size())
-                .boxed()
-                .map(getInitiativeItem)
-                .collect(Collectors.toList());
-
-        return initiative;
-    }
-
-
-    /**
-     * Each element of the initiative is represented by an Entry (Combatant, Integer), where the Combatant is the subject of
-     * the initiative, and the Integer is its position in the initiative order.
-     *
-     * @return initiative order as List &lt Map.Entry &lt Combatant, Integer &gt &gt. Elements of the returned list are ordered
-     * by their initiative position ascending.
-     */
-    private List<Map.Entry<Combatant, Integer>> getInitiativeAsMapEntries() {
-        return computeInitiativeService.getInitiativeOrder();
-    }
-
     /**
      * Creates end the returns a String representing the initiative order in a tabular format
      *
-     * @param initiative List &lt InitiativeItem &gt
+     * @param initiative List&lt;InitiativeItem&gt;
      * @return: String
      */
-    public String formatInitiative(List<InitiativeItem> initiative) {
+    public String getInitiativeFormatted(List<InitiativeItem> initiative) {
         String blockDelimiter = "```";
         String boldDelimiter = "**";
         String format = getStringFormatter();
@@ -147,6 +89,24 @@ public class InitiativeService {
         return message.toString();
     }
 
+    /**
+     * Reset the initiative
+     */
+    public void clear() {
+        initiative.clear();
+        initiativeBin.clear();
+    }
+
+    public void changeInitiative(int actualPosition, int desiredPosition) {
+        InitiativeItem removed = initiative.remove(actualPosition - INITIATIVE_STARTING_INDEX);
+        initiative.add(desiredPosition - INITIATIVE_STARTING_INDEX, removed);
+
+    }
+
+    public List<InitiativeItem> getCalculatedInitiative() {
+        initiative = computeInitiativeService.getInitiative();
+        return initiative;
+    }
 
     private int getSizeOfLongestName() {
         return initiative.stream()

@@ -1,7 +1,7 @@
 package io.github.marcolarotonda.discordbotdnd5e.command.impl;
 
 import io.github.marcolarotonda.discordbotdnd5e.command.Command;
-import io.github.marcolarotonda.discordbotdnd5e.model.InitiativeItem;
+import io.github.marcolarotonda.dnd5e.model.InitiativeItem;
 import io.github.marcolarotonda.discordbotdnd5e.service.InitiativeService;
 
 import jakarta.annotation.Nonnull;
