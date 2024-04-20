@@ -64,8 +64,9 @@ public class InitiativeService {
     /**
      * Reset the initiative
      */
-    public void clearInitiative() {
+    public void clear() {
         initiative.clear();
+        initiativeBin.clear();
     }
 
     public void changeInitiative(int actualPosition, int desiredPosition) {

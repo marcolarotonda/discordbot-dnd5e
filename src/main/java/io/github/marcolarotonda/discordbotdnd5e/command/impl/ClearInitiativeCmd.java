@@ -38,7 +38,7 @@ public class ClearInitiativeCmd implements Command {
 
     @Override
     public void execute(@Nonnull SlashCommandInteractionEvent event) {
-        initiativeService.clearInitiative();
+        initiativeService.clear();
         List<InitiativeItem> initiative = initiativeService.getInitiative();
         String initiativeFormatted = initiativeService.getInitiativeFormatted(initiative);
         event.reply(initiativeFormatted).queue();
