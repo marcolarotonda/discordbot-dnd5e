@@ -21,7 +21,7 @@ public class InitiativeService {
     private List<InitiativeItem> initiative;
 
     @Getter
-    private List<InitiativeItem> removedFromInitiative;
+    private List<InitiativeItem> initiativeBin;
 
     public static final int INITIATIVE_STARTING_INDEX = 1;
 
@@ -29,12 +29,12 @@ public class InitiativeService {
     public InitiativeService(ComputeInitiativeService computeInitiativeService) {
         this.computeInitiativeService = computeInitiativeService;
         initiative = new ArrayList<>();
-        removedFromInitiative = new ArrayList<>();
+        initiativeBin = new ArrayList<>();
     }
 
     public void removeFromInitiative(int index) {
         InitiativeItem toRemove = initiative.remove(index - INITIATIVE_STARTING_INDEX);
-        removedFromInitiative.add(toRemove);
+        initiativeBin.add(toRemove);
     }
 
     public void addDamageToInitiativeItem(int index, int damageToAdd) {
