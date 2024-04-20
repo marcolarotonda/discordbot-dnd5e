@@ -73,12 +73,15 @@ public class InitiativeService {
                 .append(blockDelimiter)
                 .append(boldDelimiter);
 
-        if (!initiative.isEmpty()){
+        if (!initiative.isEmpty()) {
             String collect = IntStream.range(0, initiative.size())
                     .mapToObj(i -> {
                         InitiativeItem initiativeItem = initiative.get(i);
                         return String.format(format,
-                                INITIATIVE_STARTING_INDEX + i, initiativeItem.getName(), initiativeItem.getDamageTaken(), initiativeItem.getInitiativeValue());
+                                INITIATIVE_STARTING_INDEX + i,
+                                initiativeItem.getName(),
+                                initiativeItem.getDamageTaken(),
+                                initiativeItem.getInitiativeValue());
                     })
                     .collect(Collectors.joining("\n"));
             message.append(blockDelimiter)
