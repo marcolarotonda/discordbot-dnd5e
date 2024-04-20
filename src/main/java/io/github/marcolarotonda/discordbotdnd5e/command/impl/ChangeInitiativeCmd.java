@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+import static io.github.marcolarotonda.discordbotdnd5e.service.InitiativeService.INITIATIVE_STARTING_INDEX;
+
 @Component
 public class ChangeInitiativeCmd implements Command {
 
@@ -39,14 +41,14 @@ public class ChangeInitiativeCmd implements Command {
                 "initial",
                 "initial position of the character you want to change order",
                 true)
-                .setMinValue(1);
+                .setMinValue(INITIATIVE_STARTING_INDEX);
 
 
         OptionData finalPosition = new OptionData(OptionType.INTEGER,
                 "final",
                 "final position of the character you want to change order",
                 true)
-                .setMinValue(1);
+                .setMinValue(INITIATIVE_STARTING_INDEX);
 
         return Optional.of(List.of(startingPosition, finalPosition));
 
@@ -61,8 +63,7 @@ public class ChangeInitiativeCmd implements Command {
             int startingPosition = event.getOption("initial").getAsInt();
             int finalPosition = event.getOption("final").getAsInt();
 
-            // L'ordine di iniziativa parte da 1!
-            int maxIndex = initiativeService.getInitiative().size();
+            int maxIndex = initiativeService.getMaxIndex();
 
             if (startingPosition > maxIndex) {
                 event.reply(String.format("You input %d as initial position, but initiative has only elements up to index %d", startingPosition, maxIndex)).queue();

@@ -20,10 +20,18 @@ public class InitiativeService {
     @Getter
     private List<InitiativeItem> initiative;
 
+    public static final int INITIATIVE_STARTING_INDEX = 1;
+
     @Autowired
     public InitiativeService(ComputeInitiativeService computeInitiativeService) {
         this.computeInitiativeService = computeInitiativeService;
         initiative = new ArrayList<>();
+    }
+
+    public void addDamageToInitiativeItem(int index, int damageToAdd) {
+        InitiativeItem initiativeItem = initiative.get(index - INITIATIVE_STARTING_INDEX);
+        int currentDamage = initiativeItem.getDamageTaken();
+        initiativeItem.setDamageTaken(currentDamage + damageToAdd);
     }
 
     /**
@@ -47,8 +55,8 @@ public class InitiativeService {
     }
 
     public void changeInitiative(int actualPosition, int desiredPosition) {
-        InitiativeItem removed = initiative.remove(actualPosition - 1);
-        initiative.add(desiredPosition - 1, removed);
+        InitiativeItem removed = initiative.remove(actualPosition - INITIATIVE_STARTING_INDEX);
+        initiative.add(desiredPosition - INITIATIVE_STARTING_INDEX, removed);
 
     }
 
@@ -131,7 +139,7 @@ public class InitiativeService {
                     .mapToObj(i -> {
                         InitiativeItem initiativeItem = initiative.get(i);
                         return String.format(format,
-                                i + 1, initiativeItem.getName(), initiativeItem.getDamageTaken(), initiativeItem.getInitiativeValue());
+                                INITIATIVE_STARTING_INDEX + i, initiativeItem.getName(), initiativeItem.getDamageTaken(), initiativeItem.getInitiativeValue());
                     })
                     .collect(Collectors.joining("\n"));
             message.append(blockDelimiter)
@@ -152,6 +160,11 @@ public class InitiativeService {
 
     private String getStringFormatter() {
         return "%-10s%-" + getSizeOfLongestName() + "s%-10s%-10s\n";
+    }
+
+    public int getMaxIndex() {
+        // L'ordine di iniziativa parte da 1!
+        return getInitiative().size();
     }
 
 
