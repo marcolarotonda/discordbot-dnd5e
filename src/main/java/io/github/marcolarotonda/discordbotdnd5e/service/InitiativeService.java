@@ -37,6 +37,11 @@ public class InitiativeService {
         initiativeBin.add(toRemove);
     }
 
+    public void restoreFromBin(int binIndex, int desiredIndex) {
+        InitiativeItem fromBin = initiativeBin.remove(binIndex - INITIATIVE_STARTING_INDEX);
+        initiative.add(desiredIndex - INITIATIVE_STARTING_INDEX, fromBin);
+    }
+
     public void addDamageToInitiativeItem(int index, int damageToAdd) {
         InitiativeItem initiativeItem = initiative.get(index - INITIATIVE_STARTING_INDEX);
         int currentDamage = initiativeItem.getDamageTaken();
@@ -153,9 +158,17 @@ public class InitiativeService {
         return "%-10s%-" + getSizeOfLongestName() + "s%-10s%-10s\n";
     }
 
-    public int getMaxIndex() {
+    public int getInitiativeMaxIndex() {
+        return getMaxIndex(initiative);
+    }
+
+    public int getBinMaxIndex() {
+        return getMaxIndex(initiativeBin);
+    }
+
+    private int getMaxIndex(List<InitiativeItem> list) {
         // L'ordine di iniziativa parte da 1!
-        return getInitiative().size();
+        return list.size();
     }
 
 

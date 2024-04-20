@@ -49,7 +49,7 @@ public class AddDamageCmd implements Command {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        int maxIndex = initiativeService.getMaxIndex();
+        int maxIndex = initiativeService.getInitiativeMaxIndex();
         int index = event.getOption("index").getAsInt();
         int damage = event.getOption("damage").getAsInt();
         if (index > maxIndex) {

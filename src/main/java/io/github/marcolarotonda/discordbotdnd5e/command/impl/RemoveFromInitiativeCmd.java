@@ -46,7 +46,7 @@ public class RemoveFromInitiativeCmd implements Command {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         int index = event.getOption("index").getAsInt();
-        int maxIndex = initiativeService.getMaxIndex();
+        int maxIndex = initiativeService.getInitiativeMaxIndex();
         if (index > maxIndex) {
             event.reply(String.format("You are trying to remove a combatant with index %d, which is greater than the max index", index)).queue();
         } else {

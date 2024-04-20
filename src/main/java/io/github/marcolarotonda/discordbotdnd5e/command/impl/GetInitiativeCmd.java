@@ -42,7 +42,10 @@ public class GetInitiativeCmd implements Command {
     @Override
     public void execute(@Nonnull SlashCommandInteractionEvent event) {
         initiativeService.calculateInitiative();
-        List<InitiativeItem> initiative = initiativeService.getCalculatedInitiative();
+        List<InitiativeItem> initiative = initiativeService.getInitiative();
+        if (initiative.isEmpty()) {
+            initiative = initiativeService.getCalculatedInitiative();
+        }
         String initiativeFormatted = initiativeService.getInitiativeFormatted(initiative);
         event.reply(initiativeFormatted).queue();
     }

@@ -63,7 +63,7 @@ public class ChangeInitiativeCmd implements Command {
             int startingPosition = event.getOption("initial").getAsInt();
             int finalPosition = event.getOption("final").getAsInt();
 
-            int maxIndex = initiativeService.getMaxIndex();
+            int maxIndex = initiativeService.getInitiativeMaxIndex();
 
             if (startingPosition > maxIndex) {
                 event.reply(String.format("You input %d as initial position, but initiative has only elements up to index %d", startingPosition, maxIndex)).queue();
