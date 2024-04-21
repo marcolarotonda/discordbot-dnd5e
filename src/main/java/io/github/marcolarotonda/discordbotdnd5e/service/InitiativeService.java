@@ -10,6 +10,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static io.github.marcolarotonda.discordbotdnd5e.utils.StringUtils.BLOCK_DELIMITER;
+import static io.github.marcolarotonda.discordbotdnd5e.utils.StringUtils.BOLD_DELIMITER;
+
 @Service
 public class InitiativeService {
 
@@ -62,16 +65,14 @@ public class InitiativeService {
      * @return: String
      */
     public String getInitiativeFormatted(List<InitiativeItem> initiative) {
-        String blockDelimiter = "```";
-        String boldDelimiter = "**";
         String format = getStringFormatter();
 
         StringBuilder message = new StringBuilder();
-        message.append(boldDelimiter)
-                .append(blockDelimiter)
+        message.append(BOLD_DELIMITER)
+                .append(BLOCK_DELIMITER)
                 .append(String.format(format, "Order", "Name", "Damage", "Value"))
-                .append(blockDelimiter)
-                .append(boldDelimiter);
+                .append(BLOCK_DELIMITER)
+                .append(BOLD_DELIMITER);
 
         if (!initiative.isEmpty()) {
             String collect = IntStream.range(0, initiative.size())
@@ -84,9 +85,9 @@ public class InitiativeService {
                                 initiativeItem.getInitiativeValue());
                     })
                     .collect(Collectors.joining("\n"));
-            message.append(blockDelimiter)
+            message.append(BLOCK_DELIMITER)
                     .append(collect)
-                    .append(blockDelimiter);
+                    .append(BLOCK_DELIMITER);
         }
 
         return message.toString();
