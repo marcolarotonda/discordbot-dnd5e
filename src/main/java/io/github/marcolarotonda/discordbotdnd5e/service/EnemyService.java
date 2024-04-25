@@ -9,10 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.github.marcolarotonda.discordbotdnd5e.utils.StringUtils.BLOCK_DELIMITER;
@@ -73,18 +70,30 @@ public class EnemyService {
         StringBuilder message = new StringBuilder();
         message.append(BOLD_DELIMITER)
                 .append(BLOCK_DELIMITER)
-                .append(String.format(format, "Name", "Initiative Modifier"))
+                .append(String.format(format, "Name", "Tag", "Initiative Modifier", "Count"))
                 .append(BLOCK_DELIMITER)
                 .append(BOLD_DELIMITER);
 
         if (!enemies.isEmpty()) {
-            String collect = enemies.stream()
-                    .map(enemy -> String.format(format,
-                            enemy.getName(),
-                            enemy.getInitiativeModifier()))
+            Map<List<Object>, Long> collect = enemies.stream()
+                    .collect(Collectors.groupingBy(enemyEntity ->
+                                    List.of(enemyEntity.getName(),
+                                            enemyEntity.getTag(),
+                                            enemyEntity.getInitiativeModifier()),
+                            Collectors.counting()));
+
+            String collect1 = collect.entrySet()
+                    .stream()
+                    .map(entry -> String.format(format,
+                            entry.getKey().get(0), //Name
+                            ((Optional<String>) (entry.getKey().get(1))).orElse(""), //Tag
+                            entry.getKey().get(2), //Initiative modifier
+                            entry.getValue() //Count
+                    ))
                     .collect(Collectors.joining("\n"));
+
             message.append(BLOCK_DELIMITER)
-                    .append(collect)
+                    .append(collect1)
                     .append(BLOCK_DELIMITER);
         }
 
@@ -93,7 +102,7 @@ public class EnemyService {
     }
 
     private String getStringFormatter() {
-        return "%-" + getSizeOfLongestName() + "s%-10s\n";
+        return "%-" + getSizeOfLongestName() + "s%-" + getSizeOfLongestTag() + "s%-23s%-10s\n";
     }
 
     private int getSizeOfLongestName() {
@@ -102,6 +111,14 @@ public class EnemyService {
                 .map(enemyEntity -> enemyEntity.getName().length())
                 .max(Comparator.naturalOrder())
                 .orElse(10) + 5;
+    }
+
+    private int getSizeOfLongestTag() {
+        return enemyRepository.findAllByAliveTrue()
+                .stream()
+                .map(enemy -> enemy.getTag().orElse("").length())
+                .max(Comparator.naturalOrder())
+                .orElse(10) + 10;
     }
 
 
