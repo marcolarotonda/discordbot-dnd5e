@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class EnemySaver {
     private String name;
-    private String description;
+    private String tag;
     private int initiativeModifier;
     private int quantity;
 }

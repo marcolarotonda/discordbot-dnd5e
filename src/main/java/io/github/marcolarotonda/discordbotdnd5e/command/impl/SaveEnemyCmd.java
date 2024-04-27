@@ -3,6 +3,7 @@ package io.github.marcolarotonda.discordbotdnd5e.command.impl;
 import io.github.marcolarotonda.discordbotdnd5e.command.Command;
 import io.github.marcolarotonda.discordbotdnd5e.model.EnemySaver;
 import io.github.marcolarotonda.discordbotdnd5e.service.EnemyService;
+import io.github.marcolarotonda.discordbotdnd5e.utils.StringUtils;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -46,21 +47,21 @@ public class SaveEnemyCmd implements Command {
                 "quantity",
                 "the amount of enemies of this type you want to generate",
                 true);
-        OptionData description = new OptionData(OptionType.STRING,
-                "description",
-                "optional description of the enemy",
+        OptionData tag = new OptionData(OptionType.STRING,
+                "tag",
+                "optional tag of the enemy",
                 false);
-        return Optional.of(List.of(name, initiative, quantity, description));
+        return Optional.of(List.of(name, initiative, quantity, tag));
     }
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         String name = event.getOption("name").getAsString();
-        String description;
+        String tag;
         try {
-            description = event.getOption("description").getAsString();
+            tag = event.getOption("tag").getAsString();
         } catch (NullPointerException e) {
-            description = "";
+            tag = "";
         }
         int initiative;
         try {
@@ -76,8 +77,8 @@ public class SaveEnemyCmd implements Command {
         }
 
         EnemySaver enemySaver = EnemySaver.builder()
-                .name(name)
-                .description(description)
+                .name(StringUtils.capitalize(name))
+                .tag(tag)
                 .initiativeModifier(initiative)
                 .quantity(quantity)
                 .build();
