@@ -29,14 +29,14 @@ public class BotRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        JDA jda = JDABuilder.createLight(token)
+        JDABuilder.createLight(token)
                 .setStatus(OnlineStatus.ONLINE)
                 .addEventListeners(listener)
                 .build();
-        jda.getSelfUser()
-                .getManager()
-                .reset()
-                .setAvatar(Icon.from(new File("src/main/resources/bot-avatar.webp")))
-                .queue();
+//        jda.getSelfUser()
+//                .getManager()
+//                .reset()
+//                .setAvatar(Icon.from(new File("src/main/resources/bot-avatar.webp")))
+//                .queue();
     }
 }

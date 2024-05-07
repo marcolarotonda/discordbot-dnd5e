@@ -1,7 +1,7 @@
 package io.github.marcolarotonda.discordbotdnd5e.command.impl;
 
 import io.github.marcolarotonda.discordbotdnd5e.command.Command;
-import io.github.marcolarotonda.dnd5e.model.InitiativeItem;
+import io.github.marcolarotonda.dnd5e.entity.InitiativeItemEntity;
 import io.github.marcolarotonda.discordbotdnd5e.service.InitiativeService;
 import jakarta.annotation.Nonnull;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -39,7 +39,7 @@ public class ClearInitiativeCmd implements Command {
     @Override
     public void execute(@Nonnull SlashCommandInteractionEvent event) {
         initiativeService.clear();
-        List<InitiativeItem> initiative = initiativeService.getInitiative();
+        List<InitiativeItemEntity> initiative = initiativeService.getInitiative();
         String initiativeFormatted = initiativeService.getInitiativeFormatted(initiative);
         event.reply(initiativeFormatted).queue();
     }

@@ -1,7 +1,7 @@
 package io.github.marcolarotonda.discordbotdnd5e.command.impl;
 
 import io.github.marcolarotonda.discordbotdnd5e.command.Command;
-import io.github.marcolarotonda.dnd5e.model.InitiativeItem;
+import io.github.marcolarotonda.dnd5e.entity.InitiativeItemEntity;
 import io.github.marcolarotonda.discordbotdnd5e.service.InitiativeService;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -37,7 +37,7 @@ public class GetInitiativeBinCmd implements Command {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        List<InitiativeItem> removedFromInitiative = initiativeService.getInitiativeBin();
+        List<InitiativeItemEntity> removedFromInitiative = initiativeService.getInitiativeBin();
         String initiativeBin = initiativeService.getInitiativeFormatted(removedFromInitiative);
         event.reply(initiativeBin).queue();
     }

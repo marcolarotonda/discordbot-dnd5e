@@ -1,7 +1,7 @@
 package io.github.marcolarotonda.discordbotdnd5e.command.impl;
 
 import io.github.marcolarotonda.discordbotdnd5e.command.Command;
-import io.github.marcolarotonda.dnd5e.model.InitiativeItem;
+import io.github.marcolarotonda.dnd5e.entity.InitiativeItemEntity;
 import io.github.marcolarotonda.discordbotdnd5e.service.InitiativeService;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -62,7 +62,7 @@ public class RestoreFromInitiativeBinCmd implements Command {
             event.reply(String.format("You set %d as desired index, but it could be at most %d", desiredInitiativeIndex, initiativeMaxIndex + INITIATIVE_STARTING_INDEX)).queue();
         } else {
             initiativeService.restoreFromBin(binIndex, desiredInitiativeIndex);
-            List<InitiativeItem> initiative = initiativeService.getInitiative();
+            List<InitiativeItemEntity> initiative = initiativeService.getInitiative();
             String initiativeFormatted = initiativeService.getInitiativeFormatted(initiative);
             event.reply(initiativeFormatted).queue();
         }

@@ -1,7 +1,7 @@
 package io.github.marcolarotonda.discordbotdnd5e.command.impl;
 
 import io.github.marcolarotonda.discordbotdnd5e.command.Command;
-import io.github.marcolarotonda.dnd5e.model.InitiativeItem;
+import io.github.marcolarotonda.dnd5e.entity.InitiativeItemEntity;
 import io.github.marcolarotonda.discordbotdnd5e.service.InitiativeService;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -51,7 +51,7 @@ public class RemoveFromInitiativeCmd implements Command {
             event.reply(String.format("You are trying to remove a combatant with index %d, which is greater than the max index", index)).queue();
         } else {
             initiativeService.removeFromInitiative(index);
-            List<InitiativeItem> initiative = initiativeService.getInitiative();
+            List<InitiativeItemEntity> initiative = initiativeService.getInitiative();
             String initiativeFormatted = initiativeService.getInitiativeFormatted(initiative);
             event.reply(initiativeFormatted).queue();
         }

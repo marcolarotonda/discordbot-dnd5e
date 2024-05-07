@@ -1,6 +1,6 @@
 package io.github.marcolarotonda.discordbotdnd5e.service;
 
-import io.github.marcolarotonda.dnd5e.model.InitiativeItem;
+import io.github.marcolarotonda.dnd5e.entity.InitiativeItemEntity;
 import io.github.marcolarotonda.dnd5e.service.ComputeInitiativeService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ public class InitiativeService {
     private final ComputeInitiativeService computeInitiativeService;
 
     @Getter
-    private List<InitiativeItem> initiative;
+    private List<InitiativeItemEntity> initiative;
 
     @Getter
-    private final List<InitiativeItem> initiativeBin;
+    private final List<InitiativeItemEntity> initiativeBin;
 
     public static final int INITIATIVE_STARTING_INDEX = 1;
 
@@ -34,17 +34,17 @@ public class InitiativeService {
     }
 
     public void removeFromInitiative(int index) {
-        InitiativeItem toRemove = initiative.remove(index - INITIATIVE_STARTING_INDEX);
+        InitiativeItemEntity toRemove = initiative.remove(index - INITIATIVE_STARTING_INDEX);
         initiativeBin.add(toRemove);
     }
 
     public void restoreFromBin(int binIndex, int desiredIndex) {
-        InitiativeItem fromBin = initiativeBin.remove(binIndex - INITIATIVE_STARTING_INDEX);
+        InitiativeItemEntity fromBin = initiativeBin.remove(binIndex - INITIATIVE_STARTING_INDEX);
         initiative.add(desiredIndex - INITIATIVE_STARTING_INDEX, fromBin);
     }
 
     public void addDamageToInitiativeItem(int index, int damageToAdd) {
-        InitiativeItem initiativeItem = initiative.get(index - INITIATIVE_STARTING_INDEX);
+        InitiativeItemEntity initiativeItem = initiative.get(index - INITIATIVE_STARTING_INDEX);
         int currentDamage = initiativeItem.getDamageTaken();
         initiativeItem.setDamageTaken(currentDamage + damageToAdd);
     }
@@ -64,7 +64,7 @@ public class InitiativeService {
      * @param initiative List&lt;InitiativeItem&gt;
      * @return: String
      */
-    public String getInitiativeFormatted(List<InitiativeItem> initiative) {
+    public String getInitiativeFormatted(List<InitiativeItemEntity> initiative) {
         String format = getStringFormatter();
 
         StringBuilder message = new StringBuilder();
@@ -77,7 +77,7 @@ public class InitiativeService {
         if (!initiative.isEmpty()) {
             String collect = IntStream.range(0, initiative.size())
                     .mapToObj(i -> {
-                        InitiativeItem initiativeItem = initiative.get(i);
+                        InitiativeItemEntity initiativeItem = initiative.get(i);
                         return String.format(format,
                                 INITIATIVE_STARTING_INDEX + i,
                                 initiativeItem.getName(),
@@ -102,12 +102,12 @@ public class InitiativeService {
     }
 
     public void changeInitiative(int actualPosition, int desiredPosition) {
-        InitiativeItem removed = initiative.remove(actualPosition - INITIATIVE_STARTING_INDEX);
+        InitiativeItemEntity removed = initiative.remove(actualPosition - INITIATIVE_STARTING_INDEX);
         initiative.add(desiredPosition - INITIATIVE_STARTING_INDEX, removed);
 
     }
 
-    public List<InitiativeItem> getCalculatedInitiative() {
+    public List<InitiativeItemEntity> getCalculatedInitiative() {
         initiative = computeInitiativeService.getInitiative();
         return initiative;
     }
@@ -131,7 +131,7 @@ public class InitiativeService {
         return getMaxIndex(initiativeBin);
     }
 
-    private int getMaxIndex(List<InitiativeItem> list) {
+    private int getMaxIndex(List<InitiativeItemEntity> list) {
         // L'ordine di iniziativa parte da 1!
         return list.size();
     }

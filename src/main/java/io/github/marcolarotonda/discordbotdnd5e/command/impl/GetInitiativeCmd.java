@@ -1,7 +1,7 @@
 package io.github.marcolarotonda.discordbotdnd5e.command.impl;
 
 import io.github.marcolarotonda.discordbotdnd5e.command.Command;
-import io.github.marcolarotonda.dnd5e.model.InitiativeItem;
+import io.github.marcolarotonda.dnd5e.entity.InitiativeItemEntity;
 import io.github.marcolarotonda.discordbotdnd5e.service.InitiativeService;
 
 import jakarta.annotation.Nonnull;
@@ -42,7 +42,7 @@ public class GetInitiativeCmd implements Command {
     @Override
     public void execute(@Nonnull SlashCommandInteractionEvent event) {
         initiativeService.calculateInitiative();
-        List<InitiativeItem> initiative = initiativeService.getInitiative();
+        List<InitiativeItemEntity> initiative = initiativeService.getInitiative();
         if (initiative.isEmpty()) {
             initiative = initiativeService.getCalculatedInitiative();
         }
