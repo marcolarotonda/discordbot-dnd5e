@@ -3,6 +3,7 @@ package io.github.marcolarotonda.discordbotdnd5e.service;
 import io.github.marcolarotonda.dnd5e.entity.InitiativeItemEntity;
 import io.github.marcolarotonda.dnd5e.service.ComputeInitiativeService;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class InitiativeService {
     private final ComputeInitiativeService computeInitiativeService;
 
     @Getter
+    @Setter
     private List<InitiativeItemEntity> initiative;
 
     @Getter
