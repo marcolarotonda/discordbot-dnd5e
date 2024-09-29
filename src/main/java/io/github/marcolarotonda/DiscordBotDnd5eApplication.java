@@ -5,10 +5,10 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DiscordbotDnd5eApplication {
+public class DiscordBotDnd5eApplication {
 
 	public static void main(String[] args) {
-		SpringApplication springApplication = new SpringApplication(DiscordbotDnd5eApplication.class);
+		SpringApplication springApplication = new SpringApplication(DiscordBotDnd5eApplication.class);
 		springApplication.setWebApplicationType(WebApplicationType.NONE);
 		springApplication.run(args);
 	}
