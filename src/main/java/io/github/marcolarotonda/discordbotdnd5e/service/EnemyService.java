@@ -4,7 +4,7 @@ import io.github.marcolarotonda.discordbotdnd5e.model.EnemySaver;
 import io.github.marcolarotonda.dnd5e.entity.EnemyEntity;
 import io.github.marcolarotonda.dnd5e.entity.EnemyTypeEntity;
 import io.github.marcolarotonda.dnd5e.repository.EnemyRepository;
-import io.github.marcolarotonda.dnd5e.repository.EnemyTypeRepository;
+import io.github.marcolarotonda.dnd5e.service.EnemyTypeService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +18,13 @@ import static io.github.marcolarotonda.discordbotdnd5e.utils.StringUtils.BOLD_DE
 @Service
 public class EnemyService {
     private final EnemyRepository enemyRepository;
-    private final EnemyTypeRepository enemyTypeRepository;
+    private final EnemyTypeService enemyTypeService;
 
     @Autowired
     public EnemyService(EnemyRepository enemyRepository,
-                        EnemyTypeRepository enemyTypeRepository) {
+                        EnemyTypeService enemyTypeService) {
         this.enemyRepository = enemyRepository;
-        this.enemyTypeRepository = enemyTypeRepository;
+        this.enemyTypeService = enemyTypeService;
     }
 
     public List<EnemyEntity> getEnemies() {
@@ -41,7 +41,7 @@ public class EnemyService {
 
         String name = enemySaver.getName();
         int initiativeModifier = enemySaver.getInitiativeModifier();
-        Optional<EnemyTypeEntity> byNameAndInitiativeModifier = enemyTypeRepository.findByNameAndInitiativeModifier(name, initiativeModifier);
+        Optional<EnemyTypeEntity> byNameAndInitiativeModifier = enemyTypeService.findByNameAndInitiativeModifier(name, initiativeModifier);
 
         EnemyTypeEntity enemyType;
         if (byNameAndInitiativeModifier.isPresent()) {
