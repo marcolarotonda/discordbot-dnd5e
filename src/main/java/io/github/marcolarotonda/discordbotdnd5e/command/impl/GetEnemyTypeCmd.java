@@ -1,7 +1,8 @@
 package io.github.marcolarotonda.discordbotdnd5e.command.impl;
 
 import io.github.marcolarotonda.discordbotdnd5e.command.Command;
-import io.github.marcolarotonda.discordbotdnd5e.service.EnemyTypeService;
+import io.github.marcolarotonda.discordbotdnd5e.service.EnemyTypeFormatterService;
+import io.github.marcolarotonda.dnd5e.service.EnemyTypeService;
 import io.github.marcolarotonda.dnd5e.entity.EnemyTypeEntity;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -15,10 +16,13 @@ import java.util.Optional;
 public class GetEnemyTypeCmd implements Command {
 
     private final EnemyTypeService enemyTypeService;
+    private final EnemyTypeFormatterService enemyTypeFormatterService;
 
     @Autowired
-    public GetEnemyTypeCmd(EnemyTypeService enemyTypeService) {
+    public GetEnemyTypeCmd(EnemyTypeService enemyTypeService,
+                           EnemyTypeFormatterService enemyTypeFormatterService) {
         this.enemyTypeService = enemyTypeService;
+        this.enemyTypeFormatterService = enemyTypeFormatterService;
     }
     @Override
     public String getName() {
@@ -37,8 +41,8 @@ public class GetEnemyTypeCmd implements Command {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        List<EnemyTypeEntity> enemyTypes = enemyTypeService.getEnemyTypes();
-        String s = enemyTypeService.formatEnemyTypes(enemyTypes);
+        List<EnemyTypeEntity> enemyTypes = enemyTypeService.findAll();
+        String s = enemyTypeFormatterService.formatEnemyTypes(enemyTypes);
         event.reply(s).queue();
     }
 }
