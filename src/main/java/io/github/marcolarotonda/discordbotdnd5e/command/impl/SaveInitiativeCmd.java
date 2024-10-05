@@ -1,8 +1,8 @@
 package io.github.marcolarotonda.discordbotdnd5e.command.impl;
 
 import io.github.marcolarotonda.discordbotdnd5e.command.Command;
-import io.github.marcolarotonda.discordbotdnd5e.service.InitiativeItemService;
 import io.github.marcolarotonda.discordbotdnd5e.service.InitiativeService;
+import io.github.marcolarotonda.dnd5e.service.InitiativeItemService;
 import io.github.marcolarotonda.dnd5e.entity.InitiativeItemEntity;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
