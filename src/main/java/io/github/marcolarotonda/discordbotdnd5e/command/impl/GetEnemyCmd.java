@@ -1,7 +1,9 @@
 package io.github.marcolarotonda.discordbotdnd5e.command.impl;
 
 import io.github.marcolarotonda.discordbotdnd5e.command.Command;
-import io.github.marcolarotonda.discordbotdnd5e.service.EnemyService;
+import io.github.marcolarotonda.discordbotdnd5e.service.EnemyFormatterService;
+import io.github.marcolarotonda.dnd5e.entity.EnemyEntity;
+import io.github.marcolarotonda.dnd5e.service.EnemyService;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,13 @@ import java.util.Optional;
 public class GetEnemyCmd implements Command {
 
     private final EnemyService enemyService;
+    private final EnemyFormatterService enemyFormatterService;
 
     @Autowired
-    public GetEnemyCmd(EnemyService enemyService) {
+    public GetEnemyCmd(EnemyService enemyService,
+            EnemyFormatterService enemyFormatterService) {
         this.enemyService = enemyService;
+        this.enemyFormatterService = enemyFormatterService;
     }
 
     @Override
@@ -37,6 +42,7 @@ public class GetEnemyCmd implements Command {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        event.reply(enemyService.getEnemiesFormatted()).queue();
+        List<EnemyEntity> allByAliveTrue = enemyService.findAllByAliveTrue();
+        event.reply(enemyFormatterService.getEnemiesFormatted(allByAliveTrue)).queue();
     }
 }

@@ -1,11 +1,6 @@
 package io.github.marcolarotonda.discordbotdnd5e.service;
 
-import io.github.marcolarotonda.discordbotdnd5e.model.EnemySaver;
 import io.github.marcolarotonda.dnd5e.entity.EnemyEntity;
-import io.github.marcolarotonda.dnd5e.entity.EnemyTypeEntity;
-import io.github.marcolarotonda.dnd5e.repository.EnemyRepository;
-import io.github.marcolarotonda.dnd5e.service.EnemyTypeService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,56 +11,19 @@ import static io.github.marcolarotonda.discordbotdnd5e.utils.StringUtils.BLOCK_D
 import static io.github.marcolarotonda.discordbotdnd5e.utils.StringUtils.BOLD_DELIMITER;
 
 @Service
-public class EnemyService {
-    private final EnemyRepository enemyRepository;
-    private final EnemyTypeService enemyTypeService;
+public class EnemyFormatterService {
 
     @Autowired
-    public EnemyService(EnemyRepository enemyRepository,
-                        EnemyTypeService enemyTypeService) {
-        this.enemyRepository = enemyRepository;
-        this.enemyTypeService = enemyTypeService;
+    public EnemyFormatterService() {
     }
 
-    public List<EnemyEntity> getEnemies() {
-        return enemyRepository.findAllByAliveTrue();
-    }
 
-    public String getEnemiesFormatted() {
-        return formatEnemies(enemyRepository.findAllByAliveTrue());
-    }
-
-    @Transactional
-    public void saveEnemies(EnemySaver enemySaver) {
-
-
-        String name = enemySaver.getName();
-        int initiativeModifier = enemySaver.getInitiativeModifier();
-        Optional<EnemyTypeEntity> byNameAndInitiativeModifier = enemyTypeService.findByNameAndInitiativeModifier(name, initiativeModifier);
-
-        EnemyTypeEntity enemyType;
-        if (byNameAndInitiativeModifier.isPresent()) {
-            enemyType = byNameAndInitiativeModifier.get();
-        } else {
-            enemyType = new EnemyTypeEntity();
-            enemyType.setName(name);
-            enemyType.setInitiativeModifier(initiativeModifier);
-        }
-
-        List<EnemyEntity> enemies = new ArrayList<>();
-        int quantity = enemySaver.getQuantity();
-        for (int i = 0; i < quantity; i++) {
-            EnemyEntity enemy = new EnemyEntity();
-            enemy.setEnemyType(enemyType);
-            enemies.add(enemy);
-        }
-
-        enemyRepository.saveAll(enemies);
-
+    public String getEnemiesFormatted(List<EnemyEntity> enemies) {
+        return formatEnemies(enemies);
     }
 
     public String formatEnemies(List<EnemyEntity> enemies) {
-        String format = getStringFormatter();
+        String format = getStringFormatter(enemies);
 
         StringBuilder message = new StringBuilder();
         message.append(BOLD_DELIMITER)
@@ -101,20 +59,20 @@ public class EnemyService {
 
     }
 
-    private String getStringFormatter() {
-        return "%-" + getSizeOfLongestName() + "s%-" + getSizeOfLongestTag() + "s%-23s%-10s\n";
+    private String getStringFormatter(List<EnemyEntity> enemies) {
+        return "%-" + getSizeOfLongestName(enemies) + "s%-" + getSizeOfLongestTag(enemies) + "s%-23s%-10s\n";
     }
 
-    private int getSizeOfLongestName() {
-        return enemyRepository.findAllByAliveTrue()
+    private int getSizeOfLongestName(List<EnemyEntity> enemies) {
+        return enemies
                 .stream()
                 .map(enemyEntity -> enemyEntity.getName().length())
                 .max(Comparator.naturalOrder())
                 .orElse(10) + 5;
     }
 
-    private int getSizeOfLongestTag() {
-        return enemyRepository.findAllByAliveTrue()
+    private int getSizeOfLongestTag(List<EnemyEntity> enemies) {
+        return enemies
                 .stream()
                 .map(enemy -> enemy.getTag().orElse("").length())
                 .max(Comparator.naturalOrder())

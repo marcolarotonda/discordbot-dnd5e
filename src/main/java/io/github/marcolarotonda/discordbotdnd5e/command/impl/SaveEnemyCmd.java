@@ -1,9 +1,9 @@
 package io.github.marcolarotonda.discordbotdnd5e.command.impl;
 
 import io.github.marcolarotonda.discordbotdnd5e.command.Command;
-import io.github.marcolarotonda.discordbotdnd5e.model.EnemySaver;
-import io.github.marcolarotonda.discordbotdnd5e.service.EnemyService;
+import io.github.marcolarotonda.dnd5e.entity.EnemySaver;
 import io.github.marcolarotonda.discordbotdnd5e.utils.StringUtils;
+import io.github.marcolarotonda.dnd5e.service.EnemyService;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
