@@ -1,7 +1,6 @@
 package io.github.marcolarotonda.discordbotdnd5e.service;
 
 import io.github.marcolarotonda.dnd5e.entity.EnemyEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,10 +11,6 @@ import static io.github.marcolarotonda.discordbotdnd5e.utils.StringUtils.BOLD_DE
 
 @Service
 public class EnemyFormatterService {
-
-    @Autowired
-    public EnemyFormatterService() {
-    }
 
 
     public String getEnemiesFormatted(List<EnemyEntity> enemies) {
